@@ -29,7 +29,27 @@ def conway_assignment_two(grid_array,size):
     return grid_array  
 
 def conway_assignment_three(grid_array, size, time_step=None, animation=False):
-    return conway_assignment_two(grid_array, size)  
+    top = np.roll(grid_array, -1, axis=0)
+    bottom = np.roll(grid_array, 1, axis=0)
+    left = np.roll(grid_array, -1, axis=1)
+    right = np.roll(grid_array, 1, axis=1)
+    
+    top_left = np.roll(grid_array, [1, 1], axis=(0, 1))
+    top_right = np.roll(grid_array, [1, -1], axis=(0, 1))
+    bottom_left = np.roll(grid_array, [-1, 1], axis=(0, 1))
+    bottom_right = np.roll(grid_array, [-1, -1], axis=(0, 1))
+
+    neighbors = top_left    + top    + top_right + \
+                left        +          right + \
+                bottom_left + bottom + bottom_right
+
+
+    babies = (neighbors == 3) & (grid_array == 0)
+    survivors = ((neighbors == 2) | (neighbors == 3)) & (grid_array == 1)
+    
+    grid_array[...] = 0
+    grid_array[babies | survivors] = 1
+    return grid_array
     
 
 def GameOfLife(animations, time_step, size,initial_grid_array):     #true or false; true->last ma ekaichoti animate garni , false-> harek timestep ma animate garni
