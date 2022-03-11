@@ -30,7 +30,7 @@ def animate(i):
     
 fig = plt.figure(figsize=(15, 7))
 axes = fig.add_subplot(1,1,1)
-anim = FuncAnimation(fig, animate, frames=time_steps, interval=50, repeat=False)
+anim = FuncAnimation(fig, animate, interval=50, repeat=False)
 
 plt.xlabel('Timesteps-->')
 plt.ylabel('Alive and dead-->')
