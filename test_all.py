@@ -61,7 +61,7 @@ def animate(frameNum):
         plt.close()
 
 if animation: 
-    fig, axes = plt.subplots()
+    fig, axes = plt.subplots(figsize=(15, 8))
     fig_plot = axes.matshow(grid_arr)
     grid_board_show = plt.imshow(grid_arr)
     axes.set_title('Test Code For Conway Assignment3 function')

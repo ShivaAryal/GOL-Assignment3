@@ -29,26 +29,19 @@ def conway_assignment_two(grid_array,size):
     return grid_array  
 
 def conway_assignment_three(grid_array, size, time_step=None, animation=False):
-    top = np.roll(grid_array, -1, axis=0)
-    bottom = np.roll(grid_array, 1, axis=0)
-    left = np.roll(grid_array, -1, axis=1)
-    right = np.roll(grid_array, 1, axis=1)
+    wrapped_board = np.pad(grid_array,1, mode='wrap')
+    wrapped_shp = wrapped_board.shape[0] 
+
+    neighbors = np.roll(grid_array, [1, 1], axis=(0, 1)) + wrapped_board[2:,1:wrapped_shp-1] + np.roll(grid_array, [1, -1], axis=(0, 1)) + \
+                wrapped_board[1:wrapped_shp-1,2:wrapped_shp] +     wrapped_board[1:wrapped_shp-1,0:wrapped_shp-2] + \
+                np.roll(grid_array, [-1, 1], axis=(0, 1)) + wrapped_board[0:wrapped_shp-2, 1: wrapped_shp-1] + np.roll(grid_array, [-1, -1], axis=(0, 1))  
     
-    top_left = np.roll(grid_array, [1, 1], axis=(0, 1))
-    top_right = np.roll(grid_array, [1, -1], axis=(0, 1))
-    bottom_left = np.roll(grid_array, [-1, 1], axis=(0, 1))
-    bottom_right = np.roll(grid_array, [-1, -1], axis=(0, 1))
 
-    neighbors = top_left    + top    + top_right + \
-                left        +          right + \
-                bottom_left + bottom + bottom_right
-
-
-    babies = (neighbors == 3) & (grid_array == 0)
-    survivors = ((neighbors == 2) | (neighbors == 3)) & (grid_array == 1)
+    birth = (neighbors == 3) & (grid_array == 0)
+    survives= ((neighbors == 2) | (neighbors == 3)) & (grid_array == 1)
     
     grid_array[...] = 0
-    grid_array[babies | survivors] = 1
+    grid_array[birth | survives] = 1
     return grid_array
     
 
@@ -61,3 +54,8 @@ def GameOfLife(animations, time_step, size,initial_grid_array):     #true or fal
         
     if animations == True:
         return board_state_history
+
+
+
+
+# Reference was taken from: https://www.labri.fr/perso/nrougier/from-python-to-numpy/
